@@ -27,8 +27,18 @@ exports.index = (req, res) => {
 
 }
 
-exports.book_list = (req, res) => {
-  res.send("Not implemented author list");
+exports.book_list = (req, res, next) => {
+  // res.send("Not implemented author list");
+
+  Book.find({}, 'title author')
+  .sort({title: 1})
+  .populate('author')
+  .exec(function(err, list_books){
+    if(err) {return next(err)}
+    res.render('book_list', { title: 'Book List', book_list: list_books });
+
+  })
+
 };
 
 // specific book
