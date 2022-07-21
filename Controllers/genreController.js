@@ -5,8 +5,14 @@ var Genre = require("../models/genre");
 //     res.send("index page not implemented")
 // }
 
-exports.genre_list = (req, res) => {
-  res.send("Not implemented genre list");
+exports.genre_list = (req, res, next) => {
+  Genre.find({})
+  .sort({'name': 'ascending'})
+  .exec(function(err, list_genres){
+    if(err){return next(err) }
+    res.render('genre_list', {title: 'Genre List', genre_list: list_genres})
+  })
+  // res.send("Not implemented genre list");
 };
 
 // specific book
